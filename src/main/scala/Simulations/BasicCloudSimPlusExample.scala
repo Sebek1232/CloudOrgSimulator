@@ -46,7 +46,7 @@ object BasicCloudSimPlusExample:
     )
     logger.info(s"Created one virtual machine: $vmList")
 
-    val utilizationModel = new UtilizationModelDynamic(config.getDouble("cloudSimulator.utilizationRatio"));
+    val utilizationModel = new UtilizationModelDynamic(config.getDouble("cloudSimulator.utilizationRatio0"));
     val cloudletList = new CloudletSimple(config.getLong("cloudSimulator.cloudlet.size"), config.getInt("cloudSimulator.cloudlet.PEs"), utilizationModel) ::
       new CloudletSimple(config.getLong("cloudSimulator.cloudlet.size"), config.getInt("cloudSimulator.cloudlet.PEs"), utilizationModel) :: Nil
 

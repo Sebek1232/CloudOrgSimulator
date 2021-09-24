@@ -8,14 +8,26 @@ object Simulation:
   val logger = CreateLogger(classOf[Simulation])
 
   @main def runSimulation =
-    logger.info("Constructing a cloud model...")
-      BasicFirstExample.Start(new VmAllocationPolicySimple);
-      BasicFirstExample.Start(new VmAllocationPolicyFirstFit);
-      BasicFirstExample.Start(new VmAllocationPolicyBestFit);
-      BasicFirstExample.Start(new VmAllocationPolicyRoundRobin);
-      spaceSharedScheduler.Start();
-      timeSharedScheduler.Start();
+    logger.info("Starting vmAllocationSimple Simulation")
+    vmAllocationsSim.Start(new VmAllocationPolicySimple);
     
-    logger.info("Finished cloud simulation...")
+    logger.info("Starting vmAllocationFirstFit Simulation")
+    vmAllocationsSim.Start(new VmAllocationPolicyFirstFit);
+    
+    logger.info("Starting vmAllocationBestFit Simulation")
+    vmAllocationsSim.Start(new VmAllocationPolicyBestFit);
+    
+    logger.info("Starting vmAllocationRoundRobin Simulation")
+    vmAllocationsSim.Start(new VmAllocationPolicyRoundRobin);
+    
+    logger.info("Starting spaceSharedScheduler Simulation")
+    spaceSharedScheduler.Start();
+    
+    logger.info("Starting timeSharedScheduler Simulation")
+    timeSharedScheduler.Start();
+    
+    logger.info("Starting broadcast Storm Simulation")
+    broadcastStormSim.Start();
+    
 
 class Simulation
