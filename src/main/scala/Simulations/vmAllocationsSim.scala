@@ -1,4 +1,5 @@
 package Simulations
+
 import HelperUtils.{CreateLogger, ObtainConfigReference}
 import HelperUtils.utils.{config, *}
 
@@ -15,7 +16,7 @@ import org.cloudsimplus.builders.tables.CloudletsTableBuilder
 
 import java.util.Optional
 import collection.JavaConverters.*
-import scala.language.postfixOps
+
 
 
 class BasicFirstExample
