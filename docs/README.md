@@ -1,17 +1,17 @@
 
-##Name: Sebastian Greczek##
-##Email: sgrecz3@uic.edu##
-##Instructions##
+## Name: Sebastian Greczek
+## Email: sgrecz3@uic.edu
+## Instructions
 Load repo into intellij. Make sure you have the cloudSim Plus external libraries.
 * sbt clean compile run - to run simulations
 * sbt clean compile test - to run tests
-#Overview#
+# Overview
 These simulation can be broken down into three categories:
 * Vm Allocation Poilcy comparison (4 Simulations).
 * Cloudlet Scheduler: Time-Shared vs Space-Shared (2 Simulations).
 * BroadCast Storm (1 Simulation).
 
-###Config File Breakdown###
+### Config File Breakdown
 Three different utilization ratio are specified
 * Ratio0: Used by vm Allocation Policies. 
 * Ratio1: Used by cloudlet Time-Shared Policy
@@ -32,7 +32,7 @@ Cost config used by all simulations to set costs of runninng simulations.
 
 Network configs used by broadcast storm simulation
 
-###File Breakdown###
+### File Breakdown
 scala/HelperUtils/Utils.scala: This file holds basic cloudSim functions used by all 
 simulations except broadcast storm. These functions create the basic components of each simulation
 such as datacenters, hosts, vms, cloudlets, etc. More detail information can be seen in the comments 
@@ -50,13 +50,8 @@ configurations specified in the config breakdown.
 
 Further simulation details will shown below. 
 
-
-
-
-
-
-#Simulations#
-###Vm Allocation Policy Simulations###
+# Simulations
+### Vm Allocation Policy Simulations
 The first 4 simulations that are run, differ in the vm allocation policy. Based on the results it is shown how each 
 policy allocated vms to their respective hosts. All 4 simulations are ran using this config file, which has 3 different 
 hosts with different specifications:
@@ -65,22 +60,22 @@ hosts with different specifications:
 
 Next I will show the differences in how vms are allocated between hosts:
 
-##Simple Vm Allocation Policy##
+## Simple Vm Allocation Policy
 
 
 ![](Simple.PNG)
 
-##First Fit Allocation Policy##
+## First Fit Allocation Policy
 
 
 ![](firstFit.PNG)
 
-##Best Fit Allocation Policy##
+## Best Fit Allocation Policy##
 
 
 ![](bestFit.PNG)
 
-##Round Robin Allocation Policy##
+## Round Robin Allocation Policy
 
 
 ![](roundRobin.PNG)
@@ -115,12 +110,12 @@ each policy.
 Next simulation is organization that has a Time Shared Vm Scheduler and Cloudlet Space Shared 
 Scheduler:
 
-###Coudlet Space Shared Scheduler Simulation###
+### Coudlet Space Shared Scheduler Simulation
 
 ![](timeShareSpaceShared.PNG)
 ![](timeShareSpaceSharedCostsCpu.PNG)
 
-###config specifications:### 
+### config specifications: 
 
 ![](shareConfig.PNG)
 
@@ -149,7 +144,7 @@ cpu is idle, in my case about 25% of the time. So this scheduler will not utiliz
 
 Now lets take a look at a cloudlet time-shared scheduler for the same config values:
 
-###Cloudlet Time Shared Simulation###
+### Cloudlet Time Shared Simulation
 ![](timesharedResults.PNG)
 
 This scheduler assumes that there is no cloudlets waiting so we must bring the utilization rate down to 
@@ -159,8 +154,8 @@ in the space shared scheduler. Looking at the cost calculations this scheduler d
 about 6x over space shared but this scheduler does guarantee our cloudlets finish at the same time. If processing time
 is all we care about the space shared scheduler is better. 
 
-##BroadcastStorm##
-###Simulation Results###
+## BroadcastStorm
+### Simulation Results
 ![](bs.PNG)
 
 In this simulation we try to simulate a broadcast storm by sending messages to all components 
