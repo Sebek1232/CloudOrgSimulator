@@ -2,7 +2,7 @@
 ## Name: Sebastian Greczek
 ## Email: sgrecz3@uic.edu
 ## Instructions
-Load repo into intellij. Make sure you have the cloudSim Plus external libraries.
+Load repo into intellij. build.sbt should build all the required external libraries.
 * sbt clean compile run - to run simulations
 * sbt clean compile test - to run tests
 # Overview
