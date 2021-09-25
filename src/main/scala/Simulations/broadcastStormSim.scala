@@ -38,16 +38,16 @@ object broadcastStormSim:
     val hostList = createHostList();
     val datacenter0 = createNetworkDatacenter(cloudSim, hostList);
     logger.info("Broadcast Storm: Created one datacenter");
-    
+
     val broker0 = new DatacenterBrokerSimple(cloudSim);
     logger.info("Broadcast Storm: Created one broker");
-    
+
     val vmList0 = createVms(datacenter0);
     logger.info("Broadcast Storm: Created list of vms");
-    
+
     broker0.submitVmList(vmList0.asJava);
     logger.info("Broadcast Storm: Submitted vm list to broker");
-    
+
     val cloudletList0 = createNetworkCloudlets(vmList0,hostList);
     broker0.submitCloudletList(cloudletList0.asJava);
     logger.info("Broadcast Storm: Submitted cloudlet list to broker");
@@ -138,7 +138,7 @@ object broadcastStormSim:
     val switch1 = host0.getEdgeSwitch();
     val switch2 = host1.getEdgeSwitch()
     val cloudletList = List(createCloudlet(vm0), createCloudlet(vm1));
-    for(a <- 1 to 50) {
+    0.to(50).foreach(_=>
 
       //Send packets from host0 to host1
       val vmPacket1 = new VmPacket(vm0, vm1,
@@ -169,7 +169,7 @@ object broadcastStormSim:
       //send icmp packet between switches
       sendIcmp(switch1, switch2);
       sendIcmp(switch2, switch1);
-    }
+     );
     return cloudletList;
 
   //create one cloudlet with full utilization

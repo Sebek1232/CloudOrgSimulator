@@ -17,6 +17,7 @@ import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelDynamic
 import org.cloudbus.cloudsim.vms.{Vm, VmCost, VmSimple}
 
 import collection.JavaConverters.*
+import scala.::
 
 object utils:
   val config = ObtainConfigReference("cloudSimulator") match {
@@ -25,17 +26,17 @@ object utils:
   }
   val logger = CreateLogger(classOf[BasicCloudSimPlusExample])
 
-  //returns a DatacenterSimple object. Creates hostlist with number of hosts passed in with 
+  //returns a DatacenterSimple object. Creates hostlist with number of hosts passed in with
   //passed in number of pes. Then that list passed into the datacenter constructor. With
-  //the passed in allocation policy and cloud simulation. 
+  //the passed in allocation policy and cloud simulation.
   def createDatacenter(cloudSim: CloudSim, numOfHosts: Int, numOfPEs: Int, vmAlloPolicy: VmAllocationPolicy): Datacenter = {
     val hostList = List.fill(numOfHosts)(createHost(numOfPEs));
     return new DatacenterSimple(cloudSim, hostList.asJava, vmAlloPolicy);
   }
 
-  //returns a DatacenterSimple object. Creates hostlist with number of hosts passed in with 
-  //passed in number of pes. The created hosts have Time-Shared Vm Scehduler. Then that list passed into 
-  // the datacenter constructor. With the passed in allocation policy and cloud simulation. 
+  //returns a DatacenterSimple object. Creates hostlist with number of hosts passed in with
+  //passed in number of pes. The created hosts have Time-Shared Vm Scehduler. Then that list passed into
+  // the datacenter constructor. With the passed in allocation policy and cloud simulation.
   def createDatacenterWithTimeShared(cloudSim: CloudSim, numOfHosts: Int, numOfPEs: Int, vmAlloPolicy: VmAllocationPolicy): Datacenter = {
     val hostList = List.fill(numOfHosts)(createHostWithTimeShared(numOfPEs));
     return new DatacenterSimple(cloudSim, hostList.asJava, vmAlloPolicy);
@@ -113,9 +114,9 @@ object utils:
       .setCostPerMem(config.getDouble("cloudSimulator.costs.costPerMem"))
       .setCostPerStorage(config.getDouble("cloudSimulator.costs.costPerStorage"))
       .setCostPerBw(config.getDouble("cloudSimulator.costs.costPerBw"));
-  
 
-  //Prints the min/max/avg cpu utilization of each vm. 
+
+  //Prints the min/max/avg cpu utilization of each vm.
   def printCpuUtilOfVms(broker: DatacenterBroker) =
     val vmList = broker.getVmCreatedList().asScala;
     vmList.foreach(vm =>
@@ -126,24 +127,55 @@ object utils:
       logger.info(s"Vm $vmId: Cpu Utilization: Min:$cpuUsageMin Avg:$cpuUsageAvg Max:$cpuUsageMax");
       );
 
-  //Prints the total cost specified by the setCostValues to run a datacenter 
+  //Prints the total cost specified by the setCostValues to run a datacenter
   def printTotalCost(broker: DatacenterBroker, datacenter: Datacenter) =
-    var totalCost = 0.0;
-    var totalNonIdleVms = 0.0;
-    var processingTotalCost = 0.0;
-    var memoryTotalCost = 0.0;
-    var storageTotalCost = 0.0;
-    var bwTotalCost = 0.0;
+    val tc = broker.getVmCreatedList.asScala.map(listOftc);
+    val ptc = broker.getVmCreatedList.asScala.map(listOfptc);
+    val mtc = broker.getVmCreatedList.asScala.map(listOfmtc);
+    val stc =  broker.getVmCreatedList.asScala.map(listOfstc);
+    val btc = broker.getVmCreatedList.asScala.map(listOfbtc);
+    val nivm = broker.getVmCreatedList.asScala.map(listOfnivm);
+//      memoryTotalCost += cost.getMemoryCost();
+//      storageTotalCost += cost.getStorageCost();
+//      bwTotalCost += cost.getBwCost();
+//      val tc = tc + cost.getTotalCost();
+//      if (vm.getTotalExecutionTime > 1)
+//        totalNonIdleVms += 1;)
+
+    val totalCost = tc.sum;
+    var processingTotalCost = ptc.sum;
+    var memoryTotalCost = mtc.sum;
+    var storageTotalCost = stc.sum;
+    var bwTotalCost = btc.sum;
+    var totalNonIdleVms = nivm.sum;
     val datacenterId = datacenter.getId();
-    broker.getVmCreatedList.asScala.foreach(vm =>
-      var cost = new VmCost(vm);
-      processingTotalCost += cost.getProcessingCost();
-      memoryTotalCost += cost.getMemoryCost();
-      storageTotalCost += cost.getStorageCost();
-      bwTotalCost += cost.getBwCost();
-      totalCost += cost.getTotalCost();
-      if (vm.getTotalExecutionTime > 1)
-        totalNonIdleVms += 1;)
     logger.info(s"Total Costs for Datacenter $datacenterId");
     logger.info(s"Total Cost: $totalCost, Total Processing Cost: $processingTotalCost, Total Memory Cost: $memoryTotalCost");
     logger.info(s"Total Storage Cost: $storageTotalCost, Total Monetary Cost: $bwTotalCost, Total Non Idle VMs: $totalNonIdleVms");
+
+
+def listOftc(vm: Vm): Double =
+  val cost = new VmCost(vm);
+  return cost.getTotalCost();
+
+def listOfptc(vm: Vm): Double =
+  val cost = new VmCost(vm);
+  return cost.getProcessingCost();
+
+def listOfmtc(vm: Vm): Double =
+  val cost = new VmCost(vm);
+  return cost.getMemoryCost();
+
+def listOfbtc(vm: Vm): Double =
+  val cost = new VmCost(vm);
+  return cost.getBwCost();
+
+def listOfstc(vm: Vm): Double =
+  val cost = new VmCost(vm);
+  return cost.getStorageCost();
+
+def listOfnivm(vm: Vm): Int =
+  if(vm.getTotalExecutionTime > 1)
+      return 1;
+  else
+    return 0;
